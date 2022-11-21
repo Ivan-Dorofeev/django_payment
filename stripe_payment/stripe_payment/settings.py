@@ -7,6 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 SECRET_KEY = os.environ['SECRET_DJANGO_KEY']
+STRIPE_PUBLIC_KEY = os.environ['STRIPE_PUBLISHABLE_KEY']
+STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,23 +85,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+STATICFILES_DIRS = [BASE_DIR / 'stripe_payment/static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
