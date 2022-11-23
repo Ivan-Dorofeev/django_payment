@@ -1,53 +1,44 @@
 import stripe
 from django.conf import settings
-from django.http import JsonResponse
-from django.views import View
-from django.views.generic import TemplateView
+from django.shortcuts import render
 
-from .models import Price, Product
+from .models import Item
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-class SuccessView(TemplateView):
-    template_name = "success.html"
+def buy(request, id_product):
+    prices = {
+        10: 'price_1M7GRdEwLhYUZPgltXRLoAap',
+        100: 'price_1M7GRuEwLhYUZPgljYZPT5GB',
+        1000: 'price_1M5rhEEwLhYUZPgloadL3Ngm'
+    }
+
+    product = Item.objects.filter(id=id_product)
+    if not product:
+        return render(request, 'wrong_address.html')
+
+    product_price = product[0].price
+    product_name = product[0].name
+    stripe_request = stripe.checkout.Session.create(
+        success_url="http://localhost:8000/success.html",
+        cancel_url="http://localhost:8000/cancel.html",
+        mode="payment",
+        line_items=[
+            {
+                "price": prices[product_price],
+                "quantity": 1,
+            },
+        ],
+    )
+    session_id = stripe_request['id']
+    payment_url = stripe_request['url']
+    context = {'session_id': session_id,
+               'payment_url': payment_url,
+               'product_name': product_name
+               }
+    return render(request, 'index.html', context)
 
 
-class CancelView(TemplateView):
-    template_name = "cancel.html"
-
-
-class CreateCheckoutSessionView(View):
-    def post(self, request, *args, **kwargs):
-        price = Price.objects.get(id=self.kwargs["pk"])
-        domain = "https://yourdomain.com"
-        if settings.DEBUG:
-            domain = "http://127.0.0.1:8000"
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[
-                {
-                    'price': price.stripe_price_id,
-                    'quantity': 1,
-                },
-            ],
-            mode='payment',
-            success_url=domain + '/success/',
-            cancel_url=domain + '/cancel/',
-        )
-        return redirect(checkout_session.url)
-
-
-class ProductLandingPageView(TemplateView):
-    template_name = "landing.html"
-
-    def get_context_data(self, **kwargs):
-        product = Product.objects.get(name="Test Product")
-        prices = Price.objects.filter(product=product)
-        context = super(ProductLandingPageView,
-                        self).get_context_data(**kwargs)
-        context.update({
-            "product": product,
-            "prices": prices
-        })
-        return context
+def item_info(request, id_product):
+    pass
