@@ -7,6 +7,14 @@ from .models import Item
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
+def main(request):
+    all_products = Item.objects.all()
+    context = {
+        'all_products': all_products
+    }
+    return render(request, 'main.html', context)
+
+
 def buy(request, id_product):
     prices = {
         10: 'price_1M7GRdEwLhYUZPgltXRLoAap',
@@ -37,8 +45,13 @@ def buy(request, id_product):
                'payment_url': payment_url,
                'product_name': product_name
                }
-    return render(request, 'index.html', context)
+    return render(request, 'buy.html', context)
 
 
 def item_info(request, id_product):
-    pass
+    product = Item.objects.filter(id=id_product)
+    if not product:
+        return render(request, 'wrong_address.html')
+
+    context = {'product': product[0]}
+    return render(request, 'item_info.html', context)

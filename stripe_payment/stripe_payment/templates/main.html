@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <section>
+        <h2>
+            Список товаров
+        </h2>
+        <br>
+        {% for product in all_products %}
+            <h3> {{ product.id }} <a href="{% url 'item_info' id_product=product.id %}" target="_blank">{{ product.name }} </a>  </h3>
+        {% endfor %}
+    </section>
+</body>
+
+</html>
