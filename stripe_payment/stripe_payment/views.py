@@ -18,8 +18,8 @@ def main(request):
 def buy(request, id_product):
     prices = {
         10: 'price_1M7GRdEwLhYUZPgltXRLoAap',
-        100: 'price_1M7GRuEwLhYUZPgljYZPT5GB',
-        1000: 'price_1M5rhEEwLhYUZPgloadL3Ngm'
+        100: 'price_1M5rhEEwLhYUZPgloadL3Ngm',
+        1000: 'price_1M7GRuEwLhYUZPgljYZPT5GB'
     }
 
     product = Item.objects.filter(id=id_product)

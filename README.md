@@ -4,27 +4,30 @@
 
 ## Запуск
 
-Для запуска сайта вам понадобится Python третьей версии.
+- Сначала необходимо зайти на сайт [Stripe](https://dashboard.stripe.com/products/) и создать свой аккаунт.
+Там же создать ссылки для оплаты на каждую сумму (подробнее тут: [Документация Stripe](https://stripe.com/docs/payments/online-payments))
 
-Скачайте код с GitHub. Установите зависимости:
+ - Для запуска сайта вам понадобится Python третьей версии.
 
-```sh
-pip install -r requirements.txt
-```
+- Скачайте код с GitHub. Установите зависимости:
 
-Создайте базу данных SQLite
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-```sh
-python3 manage.py makemigrations
-```
-```sh
-python3 manage.py migrate
-```
-Запустите разработческий сервер
+ - Создайте базу данных SQLite
 
-```
-python3 manage.py runserver
-```
+    ```sh
+    python3 manage.py makemigrations
+    ```
+    ```sh
+    python3 manage.py migrate
+    ```
+ - Запустите разработческий сервер
+    
+    ```
+    python3 manage.py runserver
+    ```
 
 ## Переменные окружения
 
